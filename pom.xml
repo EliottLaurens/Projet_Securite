@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>fr.limayrac</groupId>
-    <artifactId>Cartes_animees</artifactId>
+    <artifactId>Projet_Securite</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>cartes-animees-api</name>
     <description>API REST avec Spring Boot et sécurité JWT</description>
