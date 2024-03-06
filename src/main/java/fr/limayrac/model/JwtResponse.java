@@ -5,8 +5,10 @@ public class JwtResponse {
     private String type = "Bearer";
     private String username;
 
-    public JwtResponse(String accessToken) {
-        this.token = accessToken;
+    // Constructeur avec toutes les propriétés
+    public JwtResponse(String token, String type, String username) {
+        this.token = token;
+        this.type = type;
         this.username = username;
     }
 
