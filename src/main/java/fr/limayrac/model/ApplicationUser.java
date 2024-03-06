@@ -18,7 +18,7 @@ public class ApplicationUser {
     private String password;
     // Ajouter d'autres champs selon les besoins, par exemple email, roles, etc.
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
