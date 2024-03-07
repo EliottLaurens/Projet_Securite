@@ -1,31 +1,58 @@
 package fr.limayrac.service;
 
+import fr.limayrac.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Service
 public class EmailService {
 
     @Autowired
+    private CustomUserDetailsService userDetailsService;
+
+    @Autowired
     private JavaMailSender mailSender;
 
-    public void sendSimpleMessage(String to, String subject, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("eliott.laurens@limayrac.com");
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
+    @Autowired
+    private ResourceLoader resourceLoader;
+
+    // Envoie un email HTML en utilisant un modèle
+    public void sendHtmlMessage(String to, String subject, String verificationCode) throws MessagingException, IOException {
+        String htmlTemplate = StreamUtils.copyToString(
+                resourceLoader.getResource("classpath:templates/verificationEmail.html").getInputStream(),
+                StandardCharsets.UTF_8);
+
+        // Remplace les placeholders dans le modèle HTML
+        String htmlContent = htmlTemplate.replace("${verificationCode}", verificationCode);
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setFrom("eliott.laurens@limayrac.fr");
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(htmlContent, true); // true pour indiquer que le contenu est HTML
         mailSender.send(message);
     }
 
+    // Utilise le UserDetails pour trouver l'email et envoyer le code de vérification
     public void sendVerificationCode(UserDetails userDetails, String verificationCode) {
-        String subject = "Code de vérification";
-        String text = "Votre code de vérification est : " + verificationCode;
+        String email = userDetailsService.findUserEmailByUsername(userDetails.getUsername());
 
-        // Appelle directement la méthode sendSimpleMessage sans auto-injection
-        sendSimpleMessage(userDetails.getUsername(), subject, text);
+        try {
+            sendHtmlMessage(email, "Code de vérification", verificationCode);
+        } catch (MessagingException | IOException e) {
+            e.printStackTrace();
+            // Log l'erreur ou gère-la selon tes besoins
+        }
     }
 }

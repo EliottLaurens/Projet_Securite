@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code de Vérification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #effbff; /* Couleur de fond personnalisée */
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 10px;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Ombre portée pour le conteneur */
+            text-align: center;
+            width: 100%;
+            max-width: 400px; /* Largeur maximale pour le conteneur */
+        }
+        h1 {
+            color: #303030;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #303030;
+            font-size: 1rem; /* Taille de la police ajustée */
+            margin-bottom: 10px;
+        }
+        .code {
+            color: #2a9d8f; /* Couleur du code de vérification */
+            font-weight: bold;
+            background-color: #def7f6; /* Fond du code de vérification */
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 0; /* Annulation des marges par défaut */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Code de vérification</h1>
+    <p>Votre code de vérification est :</p>
+    <p class="code">${verificationCode}</p> <!-- Code de vérification exemple -->
+</div>
+</body>
+</html>

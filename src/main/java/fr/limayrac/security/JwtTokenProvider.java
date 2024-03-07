@@ -1,5 +1,6 @@
 package fr.limayrac.security;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,12 +17,12 @@ public class JwtTokenProvider {
     private int jwtExpirationInMs;
 
     public String generateToken(Authentication authentication) {
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
         return Jwts.builder()
-                .setSubject(userPrincipal.getUsername())
+                .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
