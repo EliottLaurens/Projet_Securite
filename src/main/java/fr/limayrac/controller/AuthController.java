@@ -6,7 +6,7 @@ import fr.limayrac.model.LoginRequest;
 import fr.limayrac.model.VerificationToken;
 import fr.limayrac.repository.VerificationTokenRepository;
 import fr.limayrac.security.JwtTokenProvider;
-import fr.limayrac.service.MailService;
+import fr.limayrac.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,7 +36,7 @@ public class AuthController {
     private VerificationTokenRepository verificationTokenRepository;
 
     @Autowired
-    private MailService mailService;
+    private EmailService mailService;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -96,7 +96,7 @@ public class AuthController {
         verificationTokenRepository.save(verificationToken);
 
         // Envoi du mail avec le token
-        mailService.sendVerificationMail(userDetails.getUsername(), token);
+        mailService.sendVerificationCode(userDetails, token);
     }
 
 }
